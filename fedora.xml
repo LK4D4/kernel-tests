@@ -1,0 +1,52 @@
+<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+  <name>Fedora</name>
+  <uuid>6e125cb7-1231-4226-94ca-07b52ee3e3e8</uuid>
+  <memory unit='KiB'>1048576</memory>
+  <currentMemory unit='KiB'>1048576</currentMemory>
+  <vcpu placement='static'>1</vcpu>
+  <os>
+    <type arch='x86_64' machine='pc'>hvm</type>
+    <kernel>/root/linux-stable/arch/x86/boot/bzImage</kernel>
+    <cmdline>root=/dev/vda3 ro rd_NO_PLYMOUTH console=tty0 console=ttyS0,115200 LANG=en_US.UTF-8 selinux=0</cmdline>
+  </os>
+  <features>
+    <acpi/>
+    <pae/>
+  </features>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+      <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='raw'/>
+      <source file='/root/fedora/fedora-22.img'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <controller type='usb' index='0'/>
+    <controller type='pci' index='0' model='pci-root'/>
+    <input type='mouse' bus='ps2'/>
+    <input type='keyboard' bus='ps2'/>
+    <video>
+      <model type='cirrus' vram='16384' heads='1'/>
+    </video>
+    <serial type='pty'>
+     <source path='/dev/pts/2'/>
+     <target port='0'/>
+    </serial>
+    <console type='pty' tty='/dev/pts/2'>
+     <source path='/dev/pts/2'/>
+     <target port='0'/>
+    </console>
+    <memballoon model='none'/>
+    <interface type='network'>
+     <source network='default'/>
+    </interface>
+    <filesystem type='mount' accessmode='passthrough'>
+      <source dir='/root/linux-stable'/>
+      <target dir='kernel'/>
+    </filesystem>
+    <graphics type='vnc' port='-1'/>
+  </devices>
+</domain>
