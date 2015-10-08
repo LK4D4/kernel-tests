@@ -24,3 +24,6 @@ Run vm:
 ```
 sudo virsh create --console --autodestroy ubuntu.xml
 ```
+
+In vm you can run `setup_trace.sh` script for setting up kernel tracing for current
+process.
